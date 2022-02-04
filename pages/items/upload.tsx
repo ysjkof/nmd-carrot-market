@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
-    <div className="mt-16 px-4">
-      <div className="flex h-44 items-center justify-center border-2 border-dashed hover:border-orange-600">
-        <label>
+    <div className="py-16 px-4">
+      <div>
+        <label className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500">
           <svg
             className="h-12 w-12"
             stroke="currentColor"
@@ -19,36 +19,40 @@ const Upload: NextPage = () => {
               strokeLinejoin="round"
             />
           </svg>
-
-          <input type="file" className="file:hidden" />
+          <input type="file" className="hidden" />
         </label>
       </div>
-      <div className="my-6">
-        <label className="text-sm text-gray-900">Price</label>
-        <div className="flex items-center ">
-          <div className="absolute px-2 text-sm text-gray-600">
-            <span>$</span>
+      <div className="my-5">
+        <label htmlFor="price" className="mb-1 text-sm text-gray-700">
+          Price
+        </label>
+        <div className="relative flex items-center rounded-md shadow-sm">
+          <div className="pointer-events-none absolute flex items-center justify-center pl-3 ">
+            <span className="text-sm text-gray-500">$</span>
           </div>
           <input
+            id="price"
             type="text"
             placeholder="0.00"
-            className="w-full rounded-md px-6 text-gray-500 hover:ring-2 hover:ring-orange-500 hover:ring-offset-2 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 "
+            className="w-full appearance-none rounded-md py-2 pl-7 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:ring-orange-500 "
           />
-          <div className="absolute right-5 px-2 text-sm text-gray-600">
-            <span>USD</span>
+          <div className="absolute right-0 pr-3 ">
+            <span className="text-sm text-gray-500">USD</span>
           </div>
         </div>
       </div>
       <div className="mb-4">
-        <label className="text-sm text-gray-900">Description</label>
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          Description
+        </label>
         <div>
           <textarea
-            className="w-full rounded-md hover:ring-2 hover:ring-orange-500 hover:ring-offset-2 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+            className="mt-1 w-full rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
             rows={4}
           />
         </div>
       </div>
-      <button className="w-full rounded-md bg-orange-500 text-white hover:bg-orange-600 hover:ring-2 hover:ring-orange-500 hover:ring-offset-2">
+      <button className="mt-5 w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
         Upload product
       </button>
     </div>
