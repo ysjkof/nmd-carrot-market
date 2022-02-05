@@ -2,21 +2,21 @@ import type { NextPage } from "next";
 
 const Community: NextPage = () => {
   return (
-    <div className="px-4 pt-12">
-      <div className="flex flex-col border-b-2">
-        <span className=" mb-2 max-w-fit rounded-md bg-gray-100 px-2 text-sm font-medium">
+    <div className="space-y-8 py-10">
+      <div className="flex cursor-pointer flex-col items-start">
+        <span className="ml-4 flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
           동네질문
         </span>
-        <span className="mb-4 cursor-pointer text-sm hover:font-bold">
-          <span className="text-orange-500">Q.</span> What is the best mandu
-          restaurant?
-        </span>
-        <div className="mb-4 flex justify-between">
-          <span className="text-sm text-gray-500">니꼬</span>
-          <span className="text-sm text-gray-500">18시간 전</span>
+        <div className="mt-2 px-4 text-gray-700">
+          <span className="font-medium text-orange-500">Q.</span> What is the
+          best mandu restaurant?
         </div>
-        <div className="flex space-x-5 border-t py-1">
-          <span className="flex cursor-pointer items-center space-x-2 hover:font-bold">
+        <div className="mt-5 flex w-full items-center justify-between px-4 text-xs font-medium text-gray-500">
+          <span>니꼬</span>
+          <span>18시간 전</span>
+        </div>
+        <div className="mt-3 flex w-full space-x-5 border-t border-b-[2px] px-4 py-2.5  text-gray-700">
+          <span className="flex items-center space-x-2 text-sm">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -33,7 +33,7 @@ const Community: NextPage = () => {
             </svg>
             <span>궁금해요 1</span>
           </span>
-          <span className="flex cursor-pointer items-center space-x-2 hover:font-bold">
+          <span className="flex items-center space-x-2 text-sm">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -52,7 +52,7 @@ const Community: NextPage = () => {
           </span>
         </div>
       </div>
-      <button className="fixed bottom-0 right-0 mr-6 mb-14 rounded-full bg-orange-500 p-5 text-white hover:bg-orange-600">
+      <button className="fixed bottom-24 right-5 cursor-pointer  rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500">
         <svg
           className="h-6 w-6"
           fill="none"
