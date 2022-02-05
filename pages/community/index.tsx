@@ -2,18 +2,21 @@ import type { NextPage } from "next";
 
 const Community: NextPage = () => {
   return (
-    <div>
-      <div>
-        <span>동네질문</span>
-        <span>
-          <span>Q.</span> What is the best mandu restaurant?
+    <div className="px-4 pt-12">
+      <div className="flex flex-col border-b-2">
+        <span className=" mb-2 max-w-fit rounded-md bg-gray-100 px-2 text-sm font-medium">
+          동네질문
         </span>
-        <div>
-          <span>니꼬</span>
-          <span>18시간 전</span>
+        <span className="mb-4 cursor-pointer text-sm hover:font-bold">
+          <span className="text-orange-500">Q.</span> What is the best mandu
+          restaurant?
+        </span>
+        <div className="mb-4 flex justify-between">
+          <span className="text-sm text-gray-500">니꼬</span>
+          <span className="text-sm text-gray-500">18시간 전</span>
         </div>
-        <div>
-          <span>
+        <div className="flex space-x-5 border-t py-1">
+          <span className="flex cursor-pointer items-center space-x-2 hover:font-bold">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -30,7 +33,7 @@ const Community: NextPage = () => {
             </svg>
             <span>궁금해요 1</span>
           </span>
-          <span>
+          <span className="flex cursor-pointer items-center space-x-2 hover:font-bold">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -49,7 +52,7 @@ const Community: NextPage = () => {
           </span>
         </div>
       </div>
-      <button>
+      <button className="fixed bottom-0 right-0 mr-6 mb-14 rounded-full bg-orange-500 p-5 text-white hover:bg-orange-600">
         <svg
           className="h-6 w-6"
           fill="none"
