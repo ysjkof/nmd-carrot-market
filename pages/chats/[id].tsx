@@ -2,31 +2,36 @@ import type { NextPage } from "next";
 
 const ChatDetail: NextPage = () => {
   return (
-    <div className="space-y-4 py-10">
+    <div className="space-y-4 py-10 px-4 pb-16">
       <div className="flex items-start space-x-2">
-        <div className="h-8 w-8 rounded-full bg-gray-400" />
-        <div className="w-3/5 border  border-gray-300 p-1">
-          Hi how much are you selling them for?
+        <div className="h-8 w-8 rounded-full bg-slate-400" />
+        <div className="w-1/2 rounded-md border border-gray-300 p-2 text-sm text-gray-700">
+          <p>Hi how much are you selling them for?</p>
         </div>
       </div>
-      <div className="flex flex-row-reverse items-start gap-2">
-        <div className="h-8 w-8 rounded-full bg-gray-400" />
-        <div className="w-3/5 border border-gray-300 p-1">I want ￦20,000</div>
+      <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
+        <div className="h-8 w-8 rounded-full bg-slate-400" />
+        <div className="w-1/2 rounded-md border border-gray-300 p-2 text-sm text-gray-700">
+          <p>I want ￦20,000</p>
+        </div>
       </div>
       <div className="flex items-start space-x-2">
-        <div className="h-8 w-8 rounded-full bg-gray-400" />
-        <div className="w-3/5 border  border-gray-300 p-1">미쳤어</div>
+        <div className="h-8 w-8 rounded-full bg-slate-400" />
+        <div className="w-1/2 rounded-md border border-gray-300 p-2 text-sm text-gray-700">
+          <p>미쳤어</p>
+        </div>
       </div>
-      <div className="fixed bottom-0 w-full ">
-        <div className="mx-8 mb-4 flex items-center">
+
+      <div className="fixed inset-x-0 bottom-0 bg-white py-2">
+        <div className="relative mx-auto flex w-full max-w-md items-center">
           <input
             type="text"
-            className="w-full rounded-full focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+            className="w-full rounded-full border-gray-300 pr-12 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
           />
-          <div className="absolute right-0 mr-14">
-            <span className="cursor-pointer rounded-xl bg-orange-500 p-1.5 text-white hover:ring-2 hover:ring-orange-500 hover:ring-offset-2">
+          <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+            <button className="flex items-center rounded-full bg-orange-500 px-3 text-sm text-white hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
               &rarr;
-            </span>
+            </button>
           </div>
         </div>
       </div>
