@@ -1,6 +1,8 @@
+import type { NextPage } from "next";
 import { useState } from "react";
-
-const cls = (...classnames: string[]) => classnames.join(" ");
+import Button from "../components/button";
+import Input from "../components/input";
+import { cls } from "../libs/utils";
 
 const Enter = () => {
   const [method, setMethod] = useState<"email" | "phone">("email");
@@ -36,41 +38,23 @@ const Enter = () => {
             </button>
           </div>
         </div>
-        <form className="mt-6">
-          <label
-            htmlFor="input"
-            className="text-sm font-semibold text-gray-700"
-          >
-            {method === "email" ? "Email address" : null}
-            {method === "phone" ? "Phone number" : null}
-          </label>
-          <div>
-            {method === "email" ? (
-              <input
-                id="input"
-                className="w-full appearance-none rounded-md border-gray-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 "
-                type="email"
-                required
-              />
-            ) : null}
-            {method === "phone" ? (
-              <div className="flex items-center justify-between">
-                <span className="select-none rounded-l-md border border-r-0 border-gray-200 bg-zinc-100 p-2 shadow-sm">
-                  +82
-                </span>
-                <input
-                  id="input"
-                  className="w-full appearance-none rounded-r-md border-gray-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 "
-                  type="number"
-                  required
-                />
-              </div>
-            ) : null}
-          </div>
-          <button className="mx-auto mt-4 w-full rounded-md border border-transparent bg-orange-500 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-            {method === "email" ? "Get login link" : null}
-            {method === "phone" ? "Get one-time password" : null}
-          </button>
+        <form className="mt-8 flex flex-col space-y-4">
+          {method === "email" ? (
+            <Input name="email" label="Email address" type="email" required />
+          ) : null}
+          {method === "phone" ? (
+            <Input
+              name="phone"
+              label="Phone number"
+              type="number"
+              kind="phone"
+              required
+            />
+          ) : null}
+          {method === "email" ? <Button text={"Get login link"} /> : null}
+          {method === "phone" ? (
+            <Button text={"Get one-time password"} />
+          ) : null}
         </form>
         <div>
           <div className=" mt-8">
