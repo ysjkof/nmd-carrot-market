@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
-    <div className="py-10 px-4">
+    <div className="space-y-5 py-10 px-4">
       <div>
         <label className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500">
           <svg
@@ -22,38 +22,58 @@ const Upload: NextPage = () => {
           <input type="file" className="hidden" />
         </label>
       </div>
-      <div className="my-5">
+      <div>
+        <label
+          className="mb-1 block text-sm font-medium text-gray-700"
+          htmlFor="name"
+        >
+          Name
+        </label>
+        <div className="relative flex items-center rounded-md shadow-sm">
+          <input
+            id="name"
+            type="email"
+            className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+            required
+          />
+        </div>
+      </div>
+      <div>
         <label htmlFor="price" className="mb-1 text-sm text-gray-700">
           Price
         </label>
         <div className="relative flex items-center rounded-md shadow-sm">
-          <div className="pointer-events-none absolute flex items-center justify-center pl-3 ">
+          <div className="pointer-events-none absolute flex items-center justify-center pl-3">
             <span className="text-sm text-gray-500">$</span>
           </div>
           <input
             id="price"
             type="text"
             placeholder="0.00"
-            className="w-full appearance-none rounded-md py-2 pl-7 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:ring-orange-500 "
+            className="w-full appearance-none rounded-md py-2 pl-7 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:ring-orange-500"
           />
-          <div className="absolute right-0 pr-3 ">
+          <div className="absolute right-0 pr-3">
             <span className="text-sm text-gray-500">USD</span>
           </div>
         </div>
       </div>
       <div className="mb-4">
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="description"
+          className="mb-1 block text-sm font-medium text-gray-700"
+        >
           Description
         </label>
         <div>
           <textarea
+            id="description"
             className="mt-1 w-full rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
             rows={4}
           />
         </div>
       </div>
-      <button className="mt-5 w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-        Upload product
+      <button className="w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+        Upload item
       </button>
     </div>
   );
