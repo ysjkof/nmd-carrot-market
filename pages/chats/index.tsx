@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Chats: NextPage = () => {
   return (
-    <div className="divide-y-[1px] py-10 ">
+    <div className="divide-y py-10 ">
       {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
         <div
           key={i}
