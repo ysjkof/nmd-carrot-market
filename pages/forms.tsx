@@ -1,64 +1,56 @@
 import React, { useState } from "react";
+import { FieldErrors, useForm } from "react-hook-form";
+
+interface LoginForm {
+  username: string;
+  password: string;
+  email: string;
+  errors?: string;
+}
 
 export default function Forms() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [formErrors, setFormErrors] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const onUsernameChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setUsername(value);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    reset,
+  } = useForm<LoginForm>();
+  const onValid = (data: LoginForm) => {
+    setError("errors", { message: "Beacked is offline sorry" });
+    // reset()
   };
-  const onEmailChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setEmailError("");
-    setEmail(value);
-  };
-  const onPasswordChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setPassword(value);
-  };
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (username === "" || email === "" || password === "") {
-      setFormErrors("All fields are required");
-    }
-    if (!email.includes("@")) {
-      setEmailError("email is required");
-    }
+  const onInvalid = (errors: FieldErrors) => {
+    console.log("콘솔로그:", errors);
   };
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <input
-        onChange={onUsernameChange}
-        value={username}
+        {...register("username", {
+          required: "Username is required",
+        })}
         type="text"
         placeholder="Username"
-        required
       />
       <input
-        onChange={onEmailChange}
-        value={email}
+        {...register("email", {
+          required: "Email is required",
+          validate: {
+            notGmail: (value) =>
+              !value.includes("@gmail.com") || "Gmail is not allowed",
+          },
+        })}
         type="email"
         placeholder="Email"
-        required
       />
-      {formErrors}
+      {errors.email?.message}
       <input
-        onChange={onPasswordChange}
-        value={password}
+        {...register("password", { required: "Password is required" })}
         type="password"
         placeholder="Password"
-        required
       />
       <input type="submit" value="Create Account" />
+      {errors.errors?.message}
     </form>
   );
 }
