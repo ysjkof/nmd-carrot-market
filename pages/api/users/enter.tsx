@@ -1,6 +1,6 @@
+import client from "@libs/server/client";
+import withHandler from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../libs/server/client";
-import withHandler from "../../../libs/server/withHandler";
 
 // "/api/users/enter"로 접속하면 withHandler가 export 된다.
 // 여기서 실행할 핵심 기능은 handler다
