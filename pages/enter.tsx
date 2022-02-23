@@ -11,6 +11,7 @@ interface EnterForm {
 }
 
 const Enter = () => {
+  const [submitting, setSubmitting] = useState(Boolean);
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
@@ -20,7 +21,15 @@ const Enter = () => {
     reset(), setMethod("phone");
   };
   const onValid = (data: EnterForm) => {
-    console.log(data);
+    setSubmitting(true);
+    fetch("/api/users/enter", {
+      method: "POST",
+      body: JSON.stringify(data),
+      // 헤더가 없으면 api에서 req.body.email을 호출할때 undefined됨
+      headers: { "Content-Type": "application/json" },
+    }).then(() => {
+      setSubmitting(false);
+    });
   };
   return (
     <div className="mt-16  px-4">
@@ -77,7 +86,7 @@ const Enter = () => {
           ) : null}
           {method === "email" ? <Button text={"Get login link"} /> : null}
           {method === "phone" ? (
-            <Button text={"Get one-time password"} />
+            <Button text={submitting ? "Loading" : "Get one-time password"} />
           ) : null}
         </form>
         <div>
