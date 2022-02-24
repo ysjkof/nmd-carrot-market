@@ -9,19 +9,42 @@ import { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { phone, email } = req.body;
   const payload = phone ? { phone: +phone } : { email };
-  const user = await client.user.upsert({
-    where: {
-      // ...(phone && { phone: +phone }),
-      // ...(email && { email: email }),
-      ...payload,
+  // token에 createOrConnect를 쓸 때
+  const token = await client.token.create({
+    data: {
+      payload: "유일한값",
+      user: {
+        connectOrCreate: {
+          where: {
+            ...payload,
+          },
+          create: {
+            name: "Anonymous",
+            ...payload,
+          },
+        },
+      },
     },
-    create: {
-      name: "Anonymous",
-      ...payload,
-    },
-    update: {},
   });
-  console.log(user);
+  console.log(token);
+  // token에 connect를 쓸 때
+  // const user = await client.user.upsert({
+  //   where: {
+  //     // ...(phone && { phone: +phone }),
+  //     // ...(email && { email: email }),
+  //     ...payload,
+  //   },
+  //   create: {
+  //     name: "Anonymous",
+  //     ...payload,
+  //   },
+  //   update: {},
+  // });
+  // const token = await client.token.create({
+  //   data: { payload: "유일한값", user: { connect: { id: user.id } } },
+  // });
+
+  // prisma upsert를 쓰지 않고 할 때
   // let user;
   // if (email) {
   //   user = await client.user.findUnique({ where: { email } });
