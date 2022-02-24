@@ -1,26 +1,32 @@
 import client from "@libs/server/client";
-import withHandler from "@libs/server/withHandler";
+import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // "/api/users/enter"로 접속하면 withHandler가 export 된다.
 // 여기서 실행할 핵심 기능은 handler다
 // 에러처리 등 반복되는 기능을 쉽게쓰려고 withHandler를 사용한다.
+
 // 여기서 async 지워도 되는 거 같은데 일단 보류.
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
   const { phone, email } = req.body;
-  const payload = phone ? { phone: +phone } : { email };
+  const userInfo = phone ? { phone: +phone } : email ? { email } : null;
+  if (!userInfo) return res.status(400).json({ ok: false });
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
   // token에 createOrConnect를 쓸 때
   const token = await client.token.create({
     data: {
-      payload: "유일한값",
+      payload,
       user: {
         connectOrCreate: {
           where: {
-            ...payload,
+            ...userInfo,
           },
           create: {
             name: "Anonymous",
-            ...payload,
+            ...userInfo,
           },
         },
       },
@@ -32,11 +38,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   //   where: {
   //     // ...(phone && { phone: +phone }),
   //     // ...(email && { email: email }),
-  //     ...payload,
+  //     ...userInfo,
   //   },
   //   create: {
   //     name: "Anonymous",
-  //     ...payload,
+  //     ...userInfo,
   //   },
   //   update: {},
   // });
