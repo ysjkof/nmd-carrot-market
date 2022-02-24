@@ -7,7 +7,44 @@ import { NextApiRequest, NextApiResponse } from "next";
 // 에러처리 등 반복되는 기능을 쉽게쓰려고 withHandler를 사용한다.
 // 여기서 async 지워도 되는 거 같은데 일단 보류.
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body);
+  const { phone, email } = req.body;
+  const payload = phone ? { phone: +phone } : { email };
+  const user = await client.user.upsert({
+    where: {
+      // ...(phone && { phone: +phone }),
+      // ...(email && { email: email }),
+      ...payload,
+    },
+    create: {
+      name: "Anonymous",
+      ...payload,
+    },
+    update: {},
+  });
+  console.log(user);
+  // let user;
+  // if (email) {
+  //   user = await client.user.findUnique({ where: { email } });
+  //   if (user) console.log("fount it.");
+  //   if (!user) {
+  //     console.log("Did not find. Will create.");
+  //     user = await client.user.create({
+  //       data: { name: "Anonymous", email },
+  //     });
+  //   }
+  //   console.log(user);
+  // }
+  // if (phone) {
+  //   user = await client.user.findUnique({ where: { phone: +phone } });
+  //   if (user) console.log("fount it.");
+  //   if (!user) {
+  //     console.log("Did not find. Will create.");
+  //     user = await client.user.create({
+  //       data: { name: "Anonymous", phone: +phone },
+  //     });
+  //   }
+  //   console.log(user);
+  // }
   return res.json({ ok: true });
 }
 
