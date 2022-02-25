@@ -16,7 +16,7 @@ export default function useMutation<T = any>(
     error: undefined,
   });
   function mutation(data: any) {
-    setState(() => ({ loading: true }));
+    setState((current) => ({ ...current, loading: true }));
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
