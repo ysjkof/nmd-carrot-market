@@ -10,11 +10,22 @@ interface EnterForm {
   email?: string;
   phone?: string;
 }
+interface TokenForm {
+  token: number;
+}
+interface MutationResult {
+  ok: boolean;
+}
 
 const Enter = () => {
-  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
+  const [enter, { loading, data, error }] =
+    useMutation<MutationResult>("/api/users/enter");
+  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
+    useMutation<MutationResult>("/api/users/confirm");
   const [submitting, setSubmitting] = useState(Boolean);
   const { register, handleSubmit, reset } = useForm<EnterForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
     reset(), setMethod("email");
@@ -25,7 +36,10 @@ const Enter = () => {
   const onValid = (validForm: EnterForm) => {
     enter(validForm);
   };
-  console.log(loading, data, error);
+  const onTokenValid = (validForm: TokenForm) => {
+    confirmToken(validForm);
+  };
+  console.log("enter page :", loading, data?.ok, error);
   return (
     <div className="mt-16  px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
@@ -56,34 +70,50 @@ const Enter = () => {
             </button>
           </div>
         </div>
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="mt-8 flex flex-col space-y-4"
-        >
-          {method === "email" ? (
+        {data?.ok ? (
+          <form
+            className="mt-8 flex flex-col space-y-4"
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+          >
             <Input
-              register={register("email", { required: true })}
-              name="email"
-              label="Email address"
-              type="email"
-              required
-            />
-          ) : null}
-          {method === "phone" ? (
-            <Input
-              register={register("phone", { required: true })}
-              name="phone"
-              label="Phone number"
+              register={tokenRegister("token", { required: true })}
+              name="token"
+              label="Confirmation Token"
               type="number"
-              kind="phone"
               required
             />
-          ) : null}
-          {method === "email" ? <Button text={"Get login link"} /> : null}
-          {method === "phone" ? (
-            <Button text={submitting ? "Loading" : "Get one-time password"} />
-          ) : null}
-        </form>
+            <Button text={loading ? "Loading" : "Confirm Token"} />
+          </form>
+        ) : (
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
+            {method === "email" ? (
+              <Input
+                register={register("email", { required: true })}
+                name="email"
+                label="Email address"
+                type="email"
+                required
+              />
+            ) : null}
+            {method === "phone" ? (
+              <Input
+                register={register("phone", { required: true })}
+                name="phone"
+                label="Phone number"
+                type="number"
+                kind="phone"
+                required
+              />
+            ) : null}
+            {method === "email" ? <Button text={"Get login link"} /> : null}
+            {method === "phone" ? (
+              <Button text={submitting ? "Loading" : "Get one-time password"} />
+            ) : null}
+          </form>
+        )}
         <div>
           <div className=" mt-8">
             <div className="w-full border-b" />

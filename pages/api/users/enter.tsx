@@ -38,25 +38,25 @@ async function handler(
     },
   });
   if (phone) {
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_SERVICE_SID,
-      // to는 body에서 받은 번호를 넣어야 한다. 테스트용이라 내 번호로 보냄.
-      to: process.env.MY_PHONE!,
-      body: `Your login token is ${payload}`,
-    });
-    console.log(message);
+    // const message = await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.TWILIO_SERVICE_SID,
+    //   // to는 body에서 받은 번호를 넣어야 한다. 테스트용이라 내 번호로 보냄.
+    //   to: process.env.MY_PHONE!,
+    //   body: `Your login token is ${payload}`,
+    // });
+    // console.log(message);
   } else if (mail) {
-    const email = await mail.send({
-      from: "ysjkof@gmail.com",
-      //  to는 body에서 받은 이메일을 넣어야 한다. 테스트용이라 내 이메일로 보냄.
-      to: "ysjkof@gmail.com",
-      subject: "Your Carrot Market Verification Email",
-      text: `Your token is ${payload}`,
-      html: `<strong>Your token is ${payload}</strong>`,
-    });
-    console.log(email);
+    // const email = await mail.send({
+    //   from: "ysjkof@gmail.com",
+    //   //  to는 body에서 받은 이메일을 넣어야 한다. 테스트용이라 내 이메일로 보냄.
+    //   to: "ysjkof@gmail.com",
+    //   subject: "Your Carrot Market Verification Email",
+    //   text: `Your token is ${payload}`,
+    //   html: `<strong>Your token is ${payload}</strong>`,
+    // });
+    // console.log(email);
   }
-  console.log(token);
+  console.log("api enter token", token);
   // token에 connect를 쓸 때
   // const user = await client.user.upsert({
   //   where: {
