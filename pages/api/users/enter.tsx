@@ -1,10 +1,13 @@
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
+import twilio from "twilio";
 
 // "/api/users/enter"로 접속하면 withHandler가 export 된다.
 // 여기서 실행할 핵심 기능은 handler다
 // 에러처리 등 반복되는 기능을 쉽게쓰려고 withHandler를 사용한다.
+
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 // 여기서 async 지워도 되는 거 같은데 일단 보류.
 async function handler(
@@ -32,6 +35,14 @@ async function handler(
       },
     },
   });
+  if (phone) {
+    const message = await twilioClient.messages.create({
+      messagingServiceSid: process.env.TWILIO_SERVICE_SID,
+      to: process.env.MY_PHONE!,
+      body: `Your login token is ${payload}`,
+    });
+    console.log(message);
+  }
   console.log(token);
   // token에 connect를 쓸 때
   // const user = await client.user.upsert({
