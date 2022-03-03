@@ -102,4 +102,4 @@ async function handler(
 }
 
 // nextJS API에서는 (req: NextApiRequest, res: NextApiResponse)를 리턴해야 한다. 그리고 export default 해줘야 nextJS가 실행한다.
-export default withHandler("POST", handler);
+export default withHandler({ method: "POST", handler, isPrivate: false });
