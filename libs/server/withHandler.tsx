@@ -4,13 +4,14 @@ export interface ResponseType {
   ok: boolean;
   [ket: string]: any;
 }
+type method = "GET" | "POST" | "DELETE";
 interface ConfigType {
-  method: "GET" | "POST" | "DELETE";
+  methods: method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   isPrivate?: boolean;
 }
 export default function withHandler({
-  method,
+  methods,
   handler,
   isPrivate = true,
 }: ConfigType) {
@@ -18,7 +19,8 @@ export default function withHandler({
     req: NextApiRequest,
     res: NextApiResponse
   ): Promise<any> {
-    if (req.method !== method) {
+    // any타입의 req.method
+    if (req.method && !methods.includes(req.method as any)) {
       return res.status(405).end();
     }
     // isPrivate이 true면 세션에 로그인 상태를 확인한다. 로그인 하지 않았다면 api접근 차단
