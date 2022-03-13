@@ -23,7 +23,17 @@ async function handler(
       },
     },
   });
-  res.json({ ok: true, product });
+  const terms = product?.name.split(" ").map((word) => ({
+    name: { contains: word },
+  }));
+  const relatedProducts = await client.product.findMany({
+    where: {
+      // prisma에서 OR은 배열안에 옵션들을 다 검색한다.
+      OR: terms,
+      AND: { id: { not: product?.id } },
+    },
+  });
+  res.json({ ok: true, product, relatedProducts });
 }
 
 export default withApiSession(
