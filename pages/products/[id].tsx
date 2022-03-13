@@ -20,12 +20,15 @@ interface ItemDetailResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR<ItemDetailResponse>(
+  const { data, mutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
   const onFavClick = () => {
     toggleFav({});
+    if (!data) return; // ...data.product에서 타입스크립트 에러 해결 목적.
+    // mutate({ ...data, product: { ...data.product, name: "potato" } }, false);
+    mutate({ ...data, isLiked: !data.isLiked }, false);
   };
   return (
     <Layout canGoBack>
