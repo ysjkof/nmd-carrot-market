@@ -18,7 +18,7 @@ interface MutationResult {
   ok: boolean;
 }
 
-const Enter = () => {
+const Enter: NextPage = () => {
   const [enter, { loading, data, error }] =
     useMutation<MutationResult>("/api/users/enter");
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
