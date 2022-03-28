@@ -2,11 +2,12 @@ import type { NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
+import useUser from "@libs/client/useUser";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -19,16 +20,20 @@ interface ItemDetailResponse {
 }
 
 const ItemDetail: NextPage = () => {
+  const { user, isLoading } = useUser();
   const router = useRouter();
-  const { data, mutate } = useSWR<ItemDetailResponse>(
+  const { mutate } = useSWRConfig();
+  const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
   const onFavClick = () => {
-    toggleFav({});
     if (!data) return; // ...data.product에서 타입스크립트 에러 해결 목적.
-    // mutate({ ...data, product: { ...data.product, name: "potato" } }, false);
-    mutate({ ...data, isLiked: !data.isLiked }, false);
+    // boundMutate({ ...data, product: { ...data.product, name: "potato" } }, false);
+    // boundMutate({ ...data, isLiked: !data.isLiked }, false);
+    boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false); // 기존 값을 불러와서 쓸 수 있다.
+    // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false); // unbound mutation 테스트용. 캐시 데이터를 변경하고 싶은 게 아니라면 키값 뒤는 모두 지우면 다시 API를 요청한다
+    toggleFav({});
   };
   return (
     <Layout canGoBack>
