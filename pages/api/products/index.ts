@@ -8,7 +8,16 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    const products = await client.product.findMany({});
+    const products = await client.product.findMany({
+      include: {
+        // favs의 숫자를 세서 알려줌.
+        _count: {
+          select: {
+            favs: true,
+          },
+        },
+      },
+    });
     res.json({ ok: true, products });
   }
   if (req.method === "POST") {
