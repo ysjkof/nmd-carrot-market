@@ -25,6 +25,7 @@ async function handler(
         },
       },
       answers: {
+        // 실제 앱이라면 이걸 모두 불러 오지 않고 페이지네이션 했을 것이다.
         select: {
           answer: true,
           id: true,
