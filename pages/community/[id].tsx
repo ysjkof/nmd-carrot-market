@@ -6,6 +6,8 @@ import useSWR from "swr";
 import { Answer, Post, User } from "@prisma/client";
 import Link from "next/link";
 import { useEffect } from "react";
+import useMutation from "@libs/client/useMutation";
+import { cls } from "@libs/client/utils";
 
 interface AnswerWithUser extends Answer {
   user: User;
@@ -23,13 +25,39 @@ interface PostWithUser extends Post {
 interface CommunityPostResponse {
   ok: boolean;
   post: PostWithUser;
+  isWondering: boolean;
 }
 
 const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
-  const { data, error } = useSWR<CommunityPostResponse>(
+  const { data, mutate } = useSWR<CommunityPostResponse>(
     router.query.id ? `/api/posts/${router.query.id}` : null
   );
+  const [wonder, { loading }] = useMutation(
+    `/api/posts/${router.query.id}/wonder`
+  );
+  const onWonderClick = () => {
+    if (!data) return;
+    mutate(
+      {
+        ...data,
+        post: {
+          ...data.post,
+          _count: {
+            ...data.post._count,
+            wondering: data.isWondering
+              ? data.post._count.wondering - 1
+              : data.post._count.wondering + 1,
+          },
+        },
+        isWondering: !data.isWondering,
+      },
+      false // Next는 bound mutate로 캐시를 업데이트 한 뒤 API에 그 데이터가 맞는지 확인하는 request도 보낸다. 즉, 백엔드 업데이트 -> 캐시 업데이트 -> API에 최신 정보 요청. 여기서 false 설정하면 그걸 하지 않음.
+    ); // 이건 bound mutate다
+    if (!loading) {
+      wonder({});
+    }
+  };
   useEffect(() => {
     if (data && !data.ok) {
       router.push("/community/");
@@ -60,7 +88,13 @@ const CommunityPostDetail: NextPage = () => {
             {data?.post?.question}
           </div>
           <div className="mt-3 flex w-full space-x-5 border-t border-b-[2px] px-4 py-2.5  text-gray-700">
-            <span className="flex items-center space-x-2 text-sm">
+            <button
+              onClick={onWonderClick}
+              className={cls(
+                "flex items-center space-x-2 text-sm",
+                data?.isWondering ? "text-teal-600" : ""
+              )}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -76,7 +110,7 @@ const CommunityPostDetail: NextPage = () => {
                 ></path>
               </svg>
               <span>궁금해요 {data?.post?._count.wondering}</span>
-            </span>
+            </button>
             <span className="flex items-center space-x-2 text-sm">
               <svg
                 className="h-4 w-4"
@@ -92,7 +126,7 @@ const CommunityPostDetail: NextPage = () => {
                   d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                 ></path>
               </svg>
-              <span>답변 {data?.post?._count.wondering}</span>
+              <span>답변 {data?.post?._count.answers}</span>
             </span>
           </div>
         </div>
