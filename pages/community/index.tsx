@@ -20,8 +20,14 @@ interface PostsResponse {
 
 const Community: NextPage = () => {
   const { latitude, longitude } = useCoords();
+  // NextJS는 페이지를 미리 만들어두려고 한다.
+  // useEffect는 렌더링이 된 뒤 실행된다.
+  // 그런데 useCoords에서 useEffect를 쓰기 때문에 latitude, longitude 초기값인 Null로 에러가 나오지만 브라우저가 작동하면 값이 불러와진다.
+  // 그래서 아래 useSWR처럼 조건을 넣거나 SSR을 하고 싶다면 getServerSideProps 사용한다.
   const { data } = useSWR<PostsResponse>(
-    `api/posts?latitude=${latitude}&longitude=${longitude}`
+    latitude && longitude
+      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+      : null
   );
   return (
     <Layout hasTabBar title="동네생활">
